@@ -1,0 +1,25 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use App\Models\Student;
+class StudentSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+     $students = [
+            ['name' => 'Sahash','department_id' => 1],
+            ['name' => 'Ram','department_id' => 2],
+          
+        ];
+        foreach($students as $student){
+            Student::create($student);
+        }
+        //
+    }
+}
