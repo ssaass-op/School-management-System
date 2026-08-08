@@ -1,52 +1,83 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="h4 mb-0 fw-bold">Students</h2>
-        <a href="{{ route('students.create') }}" class="btn btn-primary btn-sm">Add Student</a>
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Students</h1>
+        <p class="text-sm text-gray-400 mt-0.5">All enrolled students</p>
     </div>
+    <a href="{{ route('student.create') }}" class="btn-primary">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Add Student
+    </a>
+</div>
 
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="ps-4">ID</th>
-                            <th>Name</th>
-                            <th>Department</th>
-                            <th class="text-end pe-4">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($students as $student)
-                            <tr>
-                                <td class="ps-4">{{ $student->id }}</td>
-                                <td class="fw-semibold">{{ $student->name }}</td>
-                                <td>
-                                    <span class="badge bg-secondary-subtle text-secondary border">
-                                        {{ $student->department->name ?? 'N/A' }}
-                                    </span>
-                                </td>
-                                <td class="text-end pe-4">
-                                    <form action="{{ route('students.destroy', $student->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this student?')">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="text-center text-muted py-4">No students found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+<div class="card">
+    <div class="overflow-x-auto">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($students as $student)
+                <tr>
+                    <td class="text-gray-400 tabular-nums w-12">{{ $loop->iteration }}</td>
+                    <td class="font-medium text-gray-900">{{ $student->name }}</td>
+                    <td>
+                        <span class="badge">{{ $student->department->name ?? '—' }}</span>
+                    </td>
+                    <td>
+                        @if($student->image)
+                       
+                        <img
+                         src="{{ asset('storage/' . $student->image) }}"
+                         alt="{{ $student->name }}"
+                         width='80'
+                         height='80'
+                         class='rounded border'
+                         style='object-fit:cover;'
+                         >
+                    @else
+                    <span class='text-gray-400'>
+                        No image available
+                    </span>
+                    @endif
+                        
+                    </td>
+                    <td class="text-right">
+                        <div class="flex items-center justify-end gap-2">
+                            <a href="{{ route('student.edit', $student) }}" class="btn-warning">Edit</a>
+                            <form action="{{ route('student.destroy', $student) }}" method="POST"
+                                  onsubmit="return confirm('Delete this student?');" class="inline">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4" class="py-16 text-center text-gray-400 text-sm">
+                        <svg class="w-10 h-10 mx-auto mb-3 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        No students yet.
+                        <a href="{{ route('student.create') }}" class="text-indigo-600 hover:underline">Add the first one →</a>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+        <div class="mt-3">
+            {{ $students->links() }}
         </div>
     </div>
 </div>

@@ -11,6 +11,7 @@ class Student extends Model
     protected $fillable = [
         'name',
         'department_id',
+        'image',
     ];
     public function department(){
         return $this->belongsTo(Department::class);
