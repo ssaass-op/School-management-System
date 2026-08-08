@@ -16,6 +16,25 @@
 
 <div class="card">
     <div class="overflow-x-auto">
+
+    <form action="{{ route('student.index') }}" method="GET" class="row mb-4">
+    <div class="col-md-4">
+        <input
+            type="text"
+            name="search"
+            class="form-control"
+            placeholder="Search by student name..."
+            value="{{ request('search') }}">
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-success">
+            Search
+        </button>
+        <a href="{{ route('student.index') }}" class="btn btn-secondary">
+            Reset
+        </a>
+    </div>
+</form>
         <table class="data-table">
             <thead>
                 <tr>

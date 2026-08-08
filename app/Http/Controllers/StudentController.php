@@ -8,9 +8,14 @@ use App\Models\Department;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $students = Student::with('department')->paginate(5);
+        $students = Student::with('department')->when($request->search,function($query)use($request){
+            $query->where('name','like','%'.$request->search.'%');
+        })
+        ->paginate(5)
+        ->withQueryString();
+            
         // dd($students);
         return view('students.index', compact('students'));
     }
