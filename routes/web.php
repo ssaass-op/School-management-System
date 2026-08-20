@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/run-migrate-secret', function () {
+    Artisan::call('migrate', ['--force' => true]);
+    return 'Database migrated successfully!';
+});
 
 
 Route::get('/', function () {
