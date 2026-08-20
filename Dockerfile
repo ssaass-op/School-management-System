@@ -1,10 +1,9 @@
 FROM php:8.2-apache
 
-# Install system dependencies, Node.js, and npm
+# Install system dependencies, Node.js, and npm from Debian repositories
 RUN apt-get update && apt-get install -y \
     libpng-dev libjpeg-dev libfreetype6-dev zip unzip git curl \
-    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
+    nodejs npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql
 
@@ -19,11 +18,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 RUN composer install --no-dev --optimize-autoloader
 
-# Install Node modules and build assets with Vite
+# Install Node modules and build Vite assets
 RUN npm install
 RUN npm run build
 
-# Set permissions for Laravel storage and cache
+# Set permissions for Laravel storage, cache, and compiled assets
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/build
 
 # Point Apache DocumentRoot to Laravel public directory
