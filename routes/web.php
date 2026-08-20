@@ -66,6 +66,13 @@ Route::get('/department-teacher/{id}/edit', [DepartmentTeacherController::class,
 Route::put('/department-teacher/{id}', [DepartmentTeacherController::class, 'update'])->name('department_teacher.update');
 Route::delete('/department-teacher/{id}', [DepartmentTeacherController::class, 'destroy'])->name('department_teacher.destroy');
 
+ Route::get('/departments', [DepartmentController::class, 'index'])->name('departments');
+ Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
+ Route::post('/departments',[DepartmentController::class, 'store'])->name('departments.store');
+ Route::get('/departments/{id}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
+ Route::put('/departments/{id}', [DepartmentController::class, 'update'])->name('departments.update');
+ Route::delete('/departments/{id}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
+
 
 
 
@@ -87,14 +94,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth','admin'])->group(function () {
-    Route::get('/departments', [DepartmentController::class, 'index'])->name('departments');
-    Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
-    Route::post('/departments',[DepartmentController::class, 'store'])->name('departments.store');
-    Route::get('/departments/{id}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
-    Route::put('/departments/{id}', [DepartmentController::class, 'update'])->name('departments.update');
-    Route::delete('/departments/{id}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
-
-
+   
 
 });
 require __DIR__.'/auth.php';
