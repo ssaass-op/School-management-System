@@ -31,3 +31,12 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/conf-available/*.conf
 
 EXPOSE 80
+# Install Node modules and build Vite assets
+RUN npm install
+RUN npm run build
+
+# Run database migrations during build
+RUN php artisan migrate --force
+
+# Set permissions for Laravel storage, cache, and compiled assets
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/build
